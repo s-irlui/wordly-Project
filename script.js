@@ -22,6 +22,7 @@ form.addEventListener("submit", function(e) {
     fetchWord(word);
 });
 
+//fetch API
 function fetchWord(word) {
     errorMessage.classList.add("hidden");
     result.classList.remove("show");
@@ -40,3 +41,36 @@ function fetchWord(word) {
             showError(error.message);
         });
 }
+
+function displayWord(data) {
+    const word = data.word;
+    const phonetic = data.phonetic || "No pronunciation";
+    const meaning = data.meanings[0];
+    const definition = meaning.definitions[0];
+
+    wordEl.textContent = word;
+    pronunciationEl.textContent = phonetic;
+    partOfSpeechEl.textContent = meaning.partOfSpeech;
+    definitionEl.textContent = definition.definition;
+    exampleEl.textContent = definition.example || "No example available";
+    synonymsEl.textContent = meaning.synonyms.length > 0 
+        ? "Synonyms: " + meaning.synonyms.join(", ") 
+        : "No synonyms";
+
+    if (data.phonetics[0] && data.phonetics[0].audio) {
+        audioEl.src = data.phonetics[0].audio;
+        audioEl.classList.remove("hidden");
+    } else {
+        audioEl.classList.add("hidden");
+    }
+
+    result.classList.add("show");
+}
+
+
+
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.classList.remove("hidden");
+}
+
