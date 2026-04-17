@@ -1,4 +1,5 @@
 //elements
+let currentWordData = null;
 const form = document.getElementById("searchForm");
 const input = document.getElementById("searchInput");
 const result = document.getElementById("result");
@@ -14,6 +15,15 @@ const audioEl = document.getElementById("audio");
 const savedList = document.getElementById("savedList");
 
 //event listener
+saveWordBtn.addEventListener("click", () => {
+    if (!currentWordData) {
+        alert("Search a word first!");
+        return;
+    }
+
+    saveWord(currentWordData);
+});
+
 form.addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -44,6 +54,8 @@ function fetchWord(word) {
 }
 
 function displayWord(data) {
+    currentWordData = data;
+
     const word = data.word;
     const phonetic = data.phonetic || "No pronunciation";
     const meaning = data.meanings[0];
@@ -67,6 +79,23 @@ function displayWord(data) {
 
     result.classList.add("show");
 }
+function saveWord(wordData) {
+    let savedWords = JSON.parse(localStorage.getItem("savedWords")) || [];
+
+    const exists = savedWords.find(item => item.word === wordData.word);
+
+    if (!exists) {
+        savedWords.push(wordData);
+        localStorage.setItem("savedWords", JSON.stringify(savedWords));
+        alert("Word saved!");
+    } else {
+        alert("Word already saved!");
+    }
+
+    renderSavedWords();
+}
+    
+
 
 function renderSavedWords() {
     const savedWords = JSON.parse(localStorage.getItem("savedWords")) || [];
