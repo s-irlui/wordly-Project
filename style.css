@@ -81,3 +81,29 @@ audio {
     width: 100%;
     margin-top: 10px;
 }
+#savedSection {
+    margin-top: 20px;
+}
+
+#savedSection h3 {
+    color: #38bdf8;
+    margin-bottom: 10px;
+}
+
+#savedList {
+    list-style: none;
+}
+
+#savedList li {
+    padding: 8px;
+    margin: 5px 0;
+    background: #020617;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+.delete-btn {
+    color: #ef4444;
+    cursor: pointer;
+}

@@ -11,6 +11,7 @@ const definitionEl = document.getElementById("definition");
 const exampleEl = document.getElementById("example");
 const synonymsEl = document.getElementById("synonyms");
 const audioEl = document.getElementById("audio");
+const savedList = document.getElementById("savedList");
 
 //event listener
 form.addEventListener("submit", function(e) {
@@ -67,6 +68,40 @@ function displayWord(data) {
     result.classList.add("show");
 }
 
+function renderSavedWords() {
+    const savedWords = JSON.parse(localStorage.getItem("savedWords")) || [];
+
+    savedList.innerHTML = "";
+
+    savedWords.forEach((item, index) => {
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+            <span class="saved-word">${item.word}</span>
+            <span class="delete-btn">✖</span>
+        `;
+
+        li.querySelector(".saved-word").onclick = () => {
+            fetchWord(item.word);
+        };
+
+        li.querySelector(".delete-btn").onclick = (e) => {
+            e.stopPropagation();
+            deleteWord(index);
+        };
+
+        savedList.appendChild(li);
+    });
+}
+function deleteWord(index) {
+    let savedWords = JSON.parse(localStorage.getItem("savedWords")) || [];
+
+    savedWords.splice(index, 1);
+
+    localStorage.setItem("savedWords", JSON.stringify(savedWords));
+
+    renderSavedWords();
+}
 
 
 function showError(message) {
